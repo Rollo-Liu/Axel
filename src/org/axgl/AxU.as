@@ -66,6 +66,17 @@ package org.axgl {
 		}
 
 		/**
+		 * If n < 0, return 0, else return n;
+		 *
+		 * @param n The number to be judged.
+		 *
+		 * @return 0 or n.
+		 */
+		public static function clampPositive(n:Number):Number {
+			return (n < 0 ? 0 : n);
+		}
+
+		/**
 		 * Clamps the passed <code>value</code> between min and max. If value is less than min, returns
 		 * min, if it is greater than max, returns max, else it returns the value itself.
 		 *

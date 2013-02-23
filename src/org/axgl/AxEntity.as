@@ -191,7 +191,9 @@ package org.axgl {
 			entityAlpha = 1;
 			parentEntityAlpha = 1;
 			
-			center = new AxPoint(x + width / 2, y + height / 2);
+			center = new AxPoint();
+			updateCenter();
+			
 			previous = new AxPoint(x, y);
 			velocity = new AxVector;
 			pvelocity = new AxVector;
@@ -263,10 +265,8 @@ package org.axgl {
 			pvelocity.x = velocity.x;
 			pvelocity.y = velocity.y;
 			
-			center.x = x + width / 2;
-			center.y = y + height / 2;
-			
 			if (stationary || (velocity.x == 0 && velocity.y == 0 && velocity.a == 0 && acceleration.x == 0 && acceleration.y == 0 && acceleration.a == 0)) {
+				updateCenter();
 				return;
 			}
 			
@@ -299,6 +299,13 @@ package org.axgl {
 					y = worldBounds.height - height;
 				}
 			}
+			
+			updateCenter();
+		}
+		
+		protected function updateCenter():void {
+			center.x = x + width / 2;
+			center.y = y + height / 2;
 		}
 
 		/**

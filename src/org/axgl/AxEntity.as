@@ -439,7 +439,6 @@ package org.axgl {
 		 */
 		public function get globalX():Number {
 			return x + parentOffset.x;
-			return this;
 		}
 		
 		/**

@@ -701,8 +701,12 @@ package org.axgl {
 		 */
 		public static function sound(soundFile:Class, volume:Number = 1, loop:Boolean = false, start:Number = 0):AxSound {
 			var soundObject:AxSound = new AxSound(soundFile, Ax.soundMuted ? 0 : volume * Ax.soundVolume, loop, start);
-			soundObject.play();
-			sounds.add(soundObject);
+			if (soundObject.play()) {
+				sounds.add(soundObject);
+				soundObject.addEventListener(AxSound.DESTROYED, function (event:Event):void {
+					sounds.remove(soundObject);
+				});
+			}
 			return soundObject;
 		}
 
@@ -717,10 +721,7 @@ package org.axgl {
 		 * @return The sound object.
 		 */
 		public static function music(soundFile:Class, volume:Number = 1, loop:Boolean = true, start:Number = 0):AxSound {
-			var soundObject:AxSound = new AxMusic(soundFile, Ax.musicMuted ? 0 : volume * Ax.musicVolume, loop, start);
-			soundObject.play();
-			sounds.add(soundObject);
-			return soundObject;
+			return sound(soundFile, volume, loop, start);
 		}
 		
 		

@@ -1,5 +1,7 @@
 package org.axgl.sound {
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
@@ -12,14 +14,18 @@ package org.axgl.sound {
 	 * whenever you play a sound or music you will get the instance of this class returned to you in
 	 * order to do more advanced effects.
 	 */
-	public class AxSound extends AxEntity {
+	public class AxSound extends AxEntity implements IEventDispatcher {
 		/** The internal flash sound object. */
 		private var sound:Sound;
 		/** The internal flash sound channel. */
 		protected var soundChannel:SoundChannel;
 		/** The internal flash sound transform. */
 		protected var soundTransform:SoundTransform;
+		/** EventDispatcher we wrap to implement IEventDispatcher **/
+		protected var eventDispatcher:EventDispatcher;
 
+		public static const DESTROYED:String = "destroyed";
+		
 		/**
 		 * The volume of the sound.
 		 * @default 1
@@ -49,6 +55,7 @@ package org.axgl.sound {
 			this.loop = loop;
 			this.start = start;
 			this.soundTransform = new SoundTransform(volume);
+			this.eventDispatcher = new EventDispatcher();
 		}
 
 		/**
@@ -56,17 +63,31 @@ package org.axgl.sound {
 		 *
 		 * @return
 		 */
-		public function play():AxSound {
+		public function play():Boolean {
 			soundChannel = sound.play(start, loop ? int.MAX_VALUE : 0, soundTransform);
-			sound.addEventListener(Event.SOUND_COMPLETE, destroy);
-			return this;
+			//If we failed to play a sound (e.g. run out of available sound channels) soundChannel will be null
+			if (soundChannel) {
+				soundChannel.addEventListener(Event.SOUND_COMPLETE, onSoundChannelComplete);
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public function get initialized():Boolean {
+			return soundChannel != null;
+		}
+
+		protected function onSoundChannelComplete(sender:Event):void {
+			destroy();
 		}
 
 		/**
 		 * Destroys the sound, freeing up resources used.
 		 */
 		override public function destroy():void {
-			sound.removeEventListener(Event.SOUND_COMPLETE, destroy);
+			dispatchEvent(new Event(DESTROYED));
+			soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundChannelComplete);
 			sound = null;
 			soundChannel = null;
 			soundTransform = null;
@@ -84,8 +105,31 @@ package org.axgl.sound {
 		 * Updates the sound transform and sound channel after the volume is changed.
 		 */
 		protected function updateVolume():void {
+			if (!initialized) return;
 			soundTransform.volume = Ax.soundMuted ? 0 : volume * Ax.soundVolume;
 			soundChannel.soundTransform = soundTransform;
+		}
+
+		//Event dispatcher implementation
+		public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, 
+		                                 useWeakReference:Boolean = false):void {
+			eventDispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
+		}
+
+		public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void {
+			eventDispatcher.removeEventListener(type, listener, useCapture);
+		}
+
+		public function dispatchEvent(event:Event):Boolean {
+			return eventDispatcher.dispatchEvent(event);
+		}
+
+		public function hasEventListener(type:String):Boolean {
+			return eventDispatcher.hasEventListener(type);
+		}
+
+		public function willTrigger(type:String):Boolean {
+			return eventDispatcher.willTrigger(type);
 		}
 	}
 }

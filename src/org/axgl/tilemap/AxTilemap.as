@@ -224,6 +224,7 @@ package org.axgl.tilemap {
 		}
 
 		override public function draw():void {
+			if (indexData.length == 0) return;
 			if (dirty) {
 				upload();
 			}

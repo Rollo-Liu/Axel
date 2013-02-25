@@ -32,5 +32,7 @@ package org.axgl.render {
 		public static const MODULATE:AxBlendMode = new AxBlendMode(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.ZERO);
 		public static const NONE:AxBlendMode = new AxBlendMode(Context3DBlendFactor.ZERO, Context3DBlendFactor.ONE);
 		public static const PARTICLE:AxBlendMode = new AxBlendMode(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE);
+		public static const MULTIPLY:AxBlendMode = new AxBlendMode(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
+		public static const SCREEN:AxBlendMode = new AxBlendMode(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR);
 	}
 }

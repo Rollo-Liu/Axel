@@ -120,6 +120,10 @@ package org.axgl.tilemap {
 		 * List of parents for pathfinding.
 		 */
 		protected var pathParents:Vector.<uint>;
+		/**
+		 * Offset of tiles on a tile image.
+		 */
+		protected var tileOffset:int = 0;
 
 		/**
 		 * Creates a new tilemap at the location specified.
@@ -181,7 +185,7 @@ package org.axgl.tilemap {
 					
 					data.push(tid);
 					bufferOffsets.push(bufferSize++);
-					tid -= 1;
+					tid -= (tileOffset - 1);
 					
 					var tx:uint = x * tileWidth;
 					var ty:uint = y * tileHeight;

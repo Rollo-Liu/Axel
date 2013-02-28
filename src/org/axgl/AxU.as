@@ -166,5 +166,9 @@ package org.axgl {
 		public static function distanceToMouse(sourceX:Number, sourceY:Number):Number {
 			return Math.sqrt((Ax.mouse.x - sourceX) * (Ax.mouse.x - sourceX) + (Ax.mouse.y - sourceY) * (Ax.mouse.y - sourceY));
 		}
+		
+		public static function assert(expression:Boolean, message:String = "Assertion failed!"):void {
+			if (!expression) throw new Error(message);
+		}
 	}
 }

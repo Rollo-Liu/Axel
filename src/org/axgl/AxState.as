@@ -1,5 +1,9 @@
 package org.axgl {
 
+import org.axgl.render.AxTexture;
+	import org.axgl.render.SimpleFilter;
+	import org.axgl.util.AxCache;
+
 	/**
 	 * A class representing a game state. Each state in your game should be a subclass extending
 	 * AxState. For example, you may have an AxState for your main menu, one for your game, one
@@ -71,6 +75,58 @@ package org.axgl {
 		 */
 		public function onResume(sourceState:Class):void {
 			// Override as needed
+		}
+		public var filters:Vector.<SimpleFilter> = new <SimpleFilter>[];
+		protected var tex:AxTexture;
+		protected var tex2:AxTexture;
+		protected function getEnabledFilters() : Vector.<SimpleFilter>
+		{
+			var res:Vector.<SimpleFilter> = new <SimpleFilter>[];
+			for (var i:uint = 0; i < filters.length; i++)
+			{
+				if (filters[i] && filters[i].enabled) res.push(filters[i]);
+			}
+			return res;
+		}
+
+		protected function prepareFilters():void {
+			var enabledFilters:Vector.<SimpleFilter> = getEnabledFilters();
+			//If using post-processing filters, render to texture instead of screen.
+			if (enabledFilters.length > 0)
+			{
+				if (!tex) {
+					tex = AxCache.emptyTexture(Ax.width, Ax.height, true, this.toString()+"_1");
+				}
+				Ax.context.setRenderToTexture(tex.texture, false, 0);
+				Ax.context.clear(0,0,0,0);//Clean texture
+			}
+		}
+		
+		protected function applyFilters():void {
+			var enabledFilters:Vector.<SimpleFilter> = getEnabledFilters();
+			//Applying post-processing filters
+			if (enabledFilters.length > 0)
+			{
+				if (!tex2 && enabledFilters.length > 1) tex2 = AxCache.emptyTexture(Ax.width, Ax.height, true, this.toString()+"_2");
+				var tmp:AxTexture;
+				//If there's more than 1 filter, draw all except last one to the next texture
+				for (var i:uint = 0; i < enabledFilters.length-1; i++)
+				{
+					enabledFilters[i].apply(tex, tex2);
+					tmp = tex;
+					tex = tex2;
+					tex2 = tmp;
+				}
+				//Draw last filter pass to back buffer
+				enabledFilters[enabledFilters.length-1].apply(tex);
+			}
+		}
+
+		override public function draw():void
+		{
+			prepareFilters();
+			super.draw();
+			applyFilters();
 		}
 	}
 }

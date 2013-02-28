@@ -121,6 +121,22 @@ package org.axgl.util {
 			textures[resource] = new AxTexture(texture, textureWidth, textureHeight, rawBitmap.width, rawBitmap.height);
 			return textures[resource];
 		}
+
+		public static function emptyTexture(requestedWidth:uint, requestedHeight:uint, optimizeForRenderToTexture:Boolean = false, uniqueKey:String = null):AxTexture {
+			if (!uniqueKey) {
+				uniqueKey = requestedWidth.toString()+"_"+requestedHeight.toString()+"_"+optimizeForRenderToTexture.toString();
+			}
+
+			if (!textures[uniqueKey]) {
+				var textureWidth:uint = nextPowerOfTwo(requestedWidth);
+				var textureHeight:uint = nextPowerOfTwo(requestedHeight);
+				var texture:Texture = Ax.context.createTexture(textureWidth, textureHeight, Context3DTextureFormat.BGRA,
+					optimizeForRenderToTexture);
+				textures[uniqueKey] = new AxTexture(texture, textureWidth, textureHeight, requestedWidth, requestedHeight);
+			}
+			
+			return textures[uniqueKey];
+		}
 		
 		private static function nextPowerOfTwo(current:uint):uint {
 			current--;

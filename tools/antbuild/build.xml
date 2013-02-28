@@ -1,0 +1,36 @@
+<project default="config-build" basedir="../">
+	<property file="build/build.properties"/>
+	<property name="glsl2agal" location="build/glsl2agal/glsl2agalopt.exe"/>
+	<property name="python" location="c:/Python27/python.exe"/>
+	<property name="telemetry" location="build/telemetry/add-opt-in.py"/>
+	<property name="cygwin" location="c:/cygwin/bin"/>
+
+	<!-- This will compile your glsl shaders (requires cygwin)-->
+	<target name="compile-shaders-cygwin">
+		<apply executable="${glsl2agal}" >
+
+			<env key="PATH" value="${cygwin}"/>
+			<arg value="-f"/>
+			<arg value="-optimize"/>
+			<fileset dir="assets/shaders" includes="*.fs" >
+				<modified update="true"/>
+			</fileset>
+		</apply>
+		<apply executable="${glsl2agal}">
+			<env key="PATH" value="${cygwin}"/>
+			<arg value="-v"/>
+			<arg value="-optimize"/>
+			<fileset dir="assets/shaders" includes="*.vs">
+				<modified update="true"/>
+			</fileset>
+		</apply>
+	</target>
+	
+	<!-- This will add advanced telemetry data to your compiled swc (requires python)-->
+	<target name="add-telemetry">
+		<exec executable="${python}">
+			<arg value="${telemetry}" />
+			<arg value="${dest}/badlands.swf" />
+		</exec>
+	</target>
+</project>

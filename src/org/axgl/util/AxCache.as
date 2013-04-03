@@ -138,7 +138,7 @@ package org.axgl.util {
 			return textures[uniqueKey];
 		}
 		
-		private static function nextPowerOfTwo(current:uint):uint {
+		public static function nextPowerOfTwo(current:uint):uint {
 			current--;
 			current = (current >> 1) | current;
 			current = (current >> 2) | current;

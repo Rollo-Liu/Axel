@@ -6,6 +6,7 @@ package org.axgl {
 	import flash.display3D.Context3DProgramType;
 	import flash.display3D.Context3DVertexBufferFormat;
 	import flash.display3D.IndexBuffer3D;
+	import flash.display3D.VertexBuffer3D;
 	import flash.geom.Matrix3D;
 	import flash.geom.Vector3D;
 	import flash.sensors.Accelerometer;
@@ -17,6 +18,7 @@ package org.axgl {
 	import org.axgl.render.AxQuad;
 	import org.axgl.resource.AxResource;
 	import org.axgl.util.AxAnimation;
+	import org.axgl.util.AxCache;
 	import org.axgl.util.AxCache;
 
 	/**
@@ -604,10 +606,24 @@ package org.axgl {
 		 * A static sprite index buffer that all AxSprites will use.
 		 */
 		public static var SPRITE_INDEX_BUFFER:IndexBuffer3D;
-
 		{
 			SPRITE_INDEX_BUFFER = Ax.context.createIndexBuffer(6);
 			SPRITE_INDEX_BUFFER.uploadFromVector(Vector.<uint>([0, 1, 2, 1, 2, 3]), 0, 6);
+		}
+
+		/**
+		 * Static vertex buffer to draw fullscreen quad with a uv mapping
+		 * Should be used WITHOUT Axel camera
+		 */
+		public static var FULLSCREEN_QUAD_VERTEX:VertexBuffer3D;
+		{
+			FULLSCREEN_QUAD_VERTEX = Ax.context.createVertexBuffer(4,4);
+			FULLSCREEN_QUAD_VERTEX.uploadFromVector(new <Number>[ // x, y, u, v
+				-1, -1,  0,  1,
+				 1, -1,  1,  1,
+				-1,  1,  0,  0,
+				 1,  1,  1,  0,
+			], 0, 4);
 		}
 	}
 }

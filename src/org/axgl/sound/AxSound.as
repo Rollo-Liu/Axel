@@ -87,7 +87,7 @@ package org.axgl.sound {
 		 */
 		override public function destroy():void {
 			dispatchEvent(new Event(DESTROYED));
-			soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundChannelComplete);
+			if (soundChannel) soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundChannelComplete);
 			sound = null;
 			soundChannel = null;
 			soundTransform = null;

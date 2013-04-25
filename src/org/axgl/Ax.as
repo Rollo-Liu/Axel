@@ -8,7 +8,6 @@ package org.axgl {
 	import flash.display3D.Context3DCompareMode;
 	import flash.display3D.Context3DRenderMode;
 	import flash.display3D.Context3DTriangleFace;
-	import flash.display3D.Program3D;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -18,7 +17,6 @@ package org.axgl {
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
 	import flash.utils.getTimer;
-	
 	import org.axgl.collision.AxCollider;
 	import org.axgl.collision.AxCollisionGroup;
 	import org.axgl.collision.AxGrid;
@@ -27,7 +25,6 @@ package org.axgl {
 	import org.axgl.input.AxMouse;
 	import org.axgl.render.AxColor;
 	import org.axgl.render.AxShader;
-	import org.axgl.sound.AxMusic;
 	import org.axgl.sound.AxSound;
 	import org.axgl.tilemap.AxTilemap;
 	import org.axgl.util.AxCamera;
@@ -351,8 +348,8 @@ package org.axgl {
 			stage.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
 
 			// Bind focus and unfocus events
-			stage.addEventListener(Event.DEACTIVATE, onFocusLost);
-			stage.addEventListener(Event.ACTIVATE, onFocusGained);
+//			stage.addEventListener(Event.DEACTIVATE, onFocusLost);
+//			stage.addEventListener(Event.ACTIVATE, onFocusGained);
 		}
 
 		/**
@@ -424,9 +421,8 @@ package org.axgl {
 		 * @param event
 		 */
 		protected function onStageCreate(event:Event):void {
-			removeEventListener(Event.CONTEXT3D_CREATE, onStageCreate);
-
 			stage3D = event.target as Stage3D;
+			stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onStageCreate);
 			context = stage3D.context3D;
 
 			if (context == null) {
@@ -500,22 +496,51 @@ package org.axgl {
 			return renderMode;
 		}
 
+		protected function onRecreateStage(event:Event):void
+		{
+			stage3D = event.target as Stage3D;
+			stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onRecreateStage);
+			context = stage3D.context3D;
+
+			stage.frameRate = requestedFramerate;
+
+			Ax.width = requestedWidth == 0 ? stage.stageWidth : requestedWidth;
+			Ax.height = requestedHeight == 0 ? stage.stageHeight : requestedHeight;
+
+			context.configureBackBuffer(Ax.width, Ax.height, 0, false);
+//			context.enableErrorChecking = true;
+			stageRecreating = false;
+			needRefresh = true;
+		}
+
 		/**
 		 * The main game loop callback that is executed once per frame. Handles updating the
 		 * game logic.
 		 *
 		 * @param event The enter frame event.
 		 */
+		public var stageRecreating:Boolean = false;
+		public static var needRefresh:Boolean = false;
 		protected function onEnterFrame(event:Event):void {
+			if (context.driverInfo == "Disposed" && !stageRecreating)
+			{
+				stage3D = stage.stage3Ds[0];
+				stage3D.addEventListener(Event.CONTEXT3D_CREATE, onRecreateStage);
+				stage3D.requestContext3D();
+				stageRecreating = true;
+				return;
+			}
+			if (stageRecreating) return;
+
 			updateTimer();
 			debugger.resetStats();
-			
+
 			var timer:uint = getTimer();
 			update();
 			debugger.setUpdateTime(getTimer() - timer);
-			
+
 			timer = getTimer();
-			draw();	
+			draw();
 			debugger.setDrawTime(getTimer() - timer);
 			
 			for (var i:uint = 0; i < destroyedStates.length; i++) {
@@ -532,6 +557,8 @@ package org.axgl {
 				debugger.active = !debugger.active;
 				debugger.heartbeat();
 			}
+
+			needRefresh = false;
 		}
 		
 		/**

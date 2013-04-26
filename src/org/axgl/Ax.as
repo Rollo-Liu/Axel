@@ -348,8 +348,8 @@ package org.axgl {
 			stage.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
 
 			// Bind focus and unfocus events
-//			stage.addEventListener(Event.DEACTIVATE, onFocusLost);
-//			stage.addEventListener(Event.ACTIVATE, onFocusGained);
+			stage.addEventListener(Event.DEACTIVATE, onFocusLost);
+			stage.addEventListener(Event.ACTIVATE, onFocusGained);
 		}
 
 		/**

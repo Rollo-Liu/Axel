@@ -48,7 +48,7 @@ package org.axgl.util {
 					0, 		0, 			0, 			0,
 					width,  0, 			uvWidth, 	0,
 					0, 		height, 	0, 			uvHeight,
-					width,  height, 	uvWidth, 	uvHeight,
+					width,  height, 	uvWidth, 	uvHeight
 				]);
 				cached = Ax.context.createVertexBuffer(vertexData.length / 4, 4);
 				cached.uploadFromVector(vertexData, 0, vertexData.length / 4);
@@ -82,7 +82,7 @@ package org.axgl.util {
 					width-debugBorderWidth, 	0, 							0,
 					width,  					0, 							0,
 					width,  					height, 					0,
-					width-debugBorderWidth, 	height, 					0,
+					width-debugBorderWidth, 	height, 					0
 				]);
 				cached = Ax.context.createVertexBuffer(vertexData.length / 3, 3);
 				cached.uploadFromVector(vertexData, 0, vertexData.length / 3);
@@ -91,7 +91,7 @@ package org.axgl.util {
 			return cached;
 		}
 		
-		public static function texture(resource:*):AxTexture {
+		public static function texture(resource:*, id:String = null):AxTexture {
 			var rawBitmap:BitmapData;
 			if (resource is Class) {
 				if (textures[resource] != null) {
@@ -99,7 +99,17 @@ package org.axgl.util {
 				}
 				rawBitmap = (new resource() as Bitmap).bitmapData;
 			} else if (resource is BitmapData) {
+				if (id == null) throw new Error("BitmapData need an ID to get Texture", resource);
+				if (textures[id] != null) {
+					return textures[id];
+				}
 				rawBitmap = resource;
+			} else if (resource is Bitmap) {
+				if (id == null) throw new Error("Bitmap need an ID to get Texture", resource);
+				if (textures[id] != null) {
+					return textures[id];
+				}
+				rawBitmap = resource.bitmapData;
 			} else {
 				throw new Error("Invalid resource:", resource);
 			}
@@ -117,9 +127,17 @@ package org.axgl.util {
 			
 			var texture:Texture = Ax.context.createTexture(textureWidth, textureHeight, Context3DTextureFormat.BGRA, false);
 			texture.uploadFromBitmapData(textureBitmap);
-			
-			textures[resource] = new AxTexture(texture, textureWidth, textureHeight, rawBitmap.width, rawBitmap.height);
-			return textures[resource];
+
+			if (resource is Class)
+			{
+				textures[resource] = new AxTexture(texture, textureWidth, textureHeight, rawBitmap.width, rawBitmap.height);
+				return textures[resource];
+			}
+			else
+			{
+				textures[id] = new AxTexture(texture, textureWidth, textureHeight, rawBitmap.width, rawBitmap.height);
+				return textures[id];
+			}
 		}
 
 		public static function emptyTexture(requestedWidth:uint, requestedHeight:uint, optimizeForRenderToTexture:Boolean = false, uniqueKey:String = null):AxTexture {

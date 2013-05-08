@@ -132,10 +132,10 @@ package org.axgl {
 		 *
 		 * @return The sprite instance.
 		 */
-		public function load(graphic:*, frameWidth:uint = 0, frameHeight:uint = 0):AxSprite {
+		public function load(graphic:*, frameWidth:uint = 0, frameHeight:uint = 0, id:String = null):AxSprite {
 			this.frameWidth = frameWidth;
 			this.frameHeight = frameHeight;
-			calculateTexture(graphic);
+			calculateTexture(graphic, id);
 			width = this.frameWidth;
 			height = this.frameHeight;
 			framesPerRow = Math.max(1, Math.floor(texture.rawWidth / width));
@@ -159,7 +159,8 @@ package org.axgl {
 		 */
 		public function create(width:uint, height:uint, color:uint):AxSprite {
 			var bitmap:BitmapData = new BitmapData(width, height, true, color);
-			return load(bitmap, width, height);
+			var id:String = width.toString() + "x" + height.toString() + "@" + color.toString();
+			return load(bitmap, width, height, id);
 		}
 
 		/**
@@ -234,8 +235,8 @@ package org.axgl {
 		 * 
 		 * @param graphic The graphic to create the texture from.
 		 */
-		private function calculateTexture(graphic:*):void {
-			texture = AxCache.texture(graphic);
+		private function calculateTexture(graphic:*, id:String = null):void {
+			texture = AxCache.texture(graphic, id);
 			if (frameWidth == 0 || frameHeight == 0) {
 				frameWidth = texture.rawWidth;
 				frameHeight = texture.rawHeight;

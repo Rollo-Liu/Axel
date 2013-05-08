@@ -99,9 +99,11 @@ package org.axgl.util {
 				}
 				rawBitmap = (new resource() as Bitmap).bitmapData;
 			} else if (resource is BitmapData) {
-				if (id == null) throw new Error("BitmapData need an ID to get Texture", resource);
-				if (textures[id] != null) {
-					return textures[id];
+				if (id)
+				{
+					if (textures[id] != null) {
+						return textures[id];
+					}
 				}
 				rawBitmap = resource;
 			} else if (resource is Bitmap) {
@@ -128,7 +130,7 @@ package org.axgl.util {
 			var texture:Texture = Ax.context.createTexture(textureWidth, textureHeight, Context3DTextureFormat.BGRA, false);
 			texture.uploadFromBitmapData(textureBitmap);
 
-			if (resource is Class)
+			if (resource is Class || !id)
 			{
 				textures[resource] = new AxTexture(texture, textureWidth, textureHeight, rawBitmap.width, rawBitmap.height);
 				return textures[resource];

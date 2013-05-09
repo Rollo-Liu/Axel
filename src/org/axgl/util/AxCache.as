@@ -168,5 +168,14 @@ package org.axgl.util {
 			current++;
 			return current;
 		}
+
+		public static function disposeTexture(id:String):void
+		{
+			if (textures[id])
+			{
+				textures[id].texture.dispose();
+				textures[id] = null;
+			}
+		}
 	}
 }

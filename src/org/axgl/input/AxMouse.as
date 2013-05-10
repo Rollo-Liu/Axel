@@ -12,7 +12,7 @@ package org.axgl.input {
 		/**
 		 * The number of input buttons for this input object.
 		 */
-		public static const NUM_INPUTS:uint = 1;
+		public static const NUM_INPUTS:uint = 3;
 
 		/**
 		 * The x position of the pointer in world coordinates.
@@ -57,6 +57,18 @@ package org.axgl.input {
 		}
 
 		/**
+		 * Event handler for releasing a mouse button.
+		 *
+		 * @param event The mouse event.
+		 */
+		public function onMouseWheel(event:MouseEvent):void {
+			if (event.delta > 0)
+				keys[AxMouseButton.WHEEL_UP] = Ax.now;
+			else if (event.delta < 0)
+				keys[AxMouseButton.WHEEL_DOWN] = Ax.now;
+		}
+
+		/**
 		 * Updates the mouse's coordinates.
 		 * 
 		 * @param x The x position in screen space.
@@ -67,6 +79,10 @@ package org.axgl.input {
 			screen.y = y / Ax.zoom;
 			this.x = screen.x + Ax.camera.x;
 			this.y = screen.y + Ax.camera.y;
+			if (keys[AxMouseButton.WHEEL_DOWN] < Ax.now)
+				keys[AxMouseButton.WHEEL_DOWN] = -Ax.now;
+			if (keys[AxMouseButton.WHEEL_UP] < Ax.now)
+				keys[AxMouseButton.WHEEL_UP] = -Ax.now;
 		}
 	}
 }

@@ -704,6 +704,7 @@ package org.axgl {
 			if (worldZoom <= 0) {
 				throw new Error("Zoom level must be greater than 0");
 			}
+			// for test purpose only, disabled the limits
 			Ax.worldZoom = worldZoom;
 			camera.calculateZoomMatrix();
 		}

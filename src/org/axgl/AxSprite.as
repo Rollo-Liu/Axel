@@ -353,8 +353,8 @@ package org.axgl {
 		override public function update():void {
 			super.update();
 
-			screen.x = x - Ax.camera.x * scroll.x;
-			screen.y = y - Ax.camera.y * scroll.y;
+			screen.x = x - offset.x - Ax.camera.x * scroll.x;
+			screen.y = y - offset.y - Ax.camera.y * scroll.y;
 			
 			if (texture == null) {
 				load(AxResource.ICON);

@@ -246,6 +246,8 @@ package org.axgl {
 		 * from memory. If you reference the members in other groups or elsewhere, you should not pass true.
 		 */
 		public function clear(dispose:Boolean = false):AxGroup {
+			if (!members) return this;
+
 			if (dispose) {
 				for (var i:uint = 0; i < members.length; i++) {
 					var entity:AxEntity = members[i];

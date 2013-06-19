@@ -102,6 +102,11 @@ package org.axgl.util {
 			target = null;
 			x = 0;
 			y = 0;
+			bounds = new AxRect;
+			bounds.x = Number.NEGATIVE_INFINITY;
+			bounds.y = Number.NEGATIVE_INFINITY;
+			bounds.width = Number.POSITIVE_INFINITY;
+			bounds.height = Number.POSITIVE_INFINITY;
 		}
 
 		/**

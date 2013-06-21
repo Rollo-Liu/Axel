@@ -301,7 +301,7 @@ package org.axgl.tilemap {
 			for (var x:uint = sx; x <= ex; x++) {
 				for (var y:uint = sy; y <= ey; y++) {
 					var tid:uint = data[y * cols + x];
-					if (tid == 0) {
+					if (tid == 0 || tid >= tiles.length) {
 						continue;
 					}
 

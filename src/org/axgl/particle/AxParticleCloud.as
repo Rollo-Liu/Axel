@@ -260,7 +260,7 @@ package org.axgl.particle {
 		 * The fragment shader used to draw particle clouds.
 		 */
 		public static const FRAGMENT_SHADER:Array = [
-			"tex ft0, v1, fs0 <2d,nearest,mipnone>",
+			"tex ft0, v1, fs0 <2d,linear,mipnone>",
 			"mul oc, ft0, v2",
 		];
 	}

@@ -483,9 +483,9 @@ package org.axgl {
 			// v2  = rgba
 			// fs0 = something
 			// fc0 = color
-			"tex ft0, v1, fs0 <2d,nearest,mipnone>",	// sample texture
+			"tex ft0, v1, fs0 <2d,linear,mipnone>",	// sample texture
 			"mul ft1, v2, fc0",						// multiple sprite color by global color
-			"mul oc, ft0, ft1",							// multiply texture by color
+			"mul oc, ft0, ft1"							// multiply texture by color
 		];
 	}
 }

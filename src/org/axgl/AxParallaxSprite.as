@@ -104,7 +104,7 @@ package org.axgl {
 			"div ft0.xyzw, v0.xy, v0.zw",
 			"frc ft0.xy, ft0.xy",
 			"mul ft0.xy, ft0.xy, v0.zw",
-			"tex ft0, ft0, fs0 <2d,nearest,mipnone>",
+			"tex ft0, ft0, fs0 <2d,linear,mipnone>",
 			"mul oc, fc0, ft0"
 		];
 		

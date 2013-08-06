@@ -289,9 +289,9 @@ package org.axgl.text {
 			// v1  = uv
 			// fs0 = tilemap texture
 			// fc0 = color
-			"tex ft0, v1, fs0 <2d,nearest,mipnone>",	// sample texture
+			"tex ft0, v1, fs0 <2d,linear,mipnone>",	// sample texture
 			"mul ft1, fc0, v2",						    // multiply global color by color of character
-			"mul oc, ft1, ft0",							// multiply by color+alpha
+			"mul oc, ft1, ft0"							// multiply by color+alpha
 		];
 	}
 }

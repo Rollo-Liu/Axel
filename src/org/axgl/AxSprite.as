@@ -599,7 +599,7 @@ package org.axgl {
 		 * The fragment shader for this sprite.
 		 */
 		private static const FRAGMENT_SHADER:Array = [
-			"tex ft0, v0, fs0 <2d,nearest,mipnone>",
+			"tex ft0, v0, fs0 <2d, repeat, linear, mipnone>",
 			"mul oc, fc0, ft0"
 		];
 
@@ -623,7 +623,7 @@ package org.axgl {
 				-1, -1,  0,  1,
 				 1, -1,  1,  1,
 				-1,  1,  0,  0,
-				 1,  1,  1,  0,
+				 1,  1,  1,  0
 			], 0, 4);
 		}
 	}

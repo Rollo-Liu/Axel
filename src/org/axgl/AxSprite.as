@@ -299,7 +299,7 @@ package org.axgl {
 		/**
 		 * Calculates the helper variables required to draw the current frame of this sprite.
 		 */
-		private function calculateFrame():void {
+		public function calculateFrame():void {
 			if (animation != null) {
 				animationTimer += Ax.dt;
 				while (animationTimer >= animationDelay) {

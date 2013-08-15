@@ -185,7 +185,7 @@ import flash.text.TextField;
 		 *
 		 * @return The AxFont you will use when creating AxText objects with this font.
 		 */
-		public static function fromFont(font:String, embedded:Boolean, size:uint, bold:Boolean = false, italic:Boolean = false, hspacing:int = 0, vspacing:int = 2, alphabet:String = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-=_+[]{};':\\\",./<>?~!@#$%^&*()"):AxFont {
+		public static function fromFont(font:String, embedded:Boolean, size:uint, bold:Boolean = false, italic:Boolean = false, hspacing:int = 0, vspacing:int = 2, padding:int = -2, alphabet:String = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-=_+[]{};':\\\",./<>?~!@#$%^&*()"):AxFont {
 			var af:AxFont = new AxFont;
 			af.spacing = new AxPoint(hspacing, vspacing);
 
@@ -208,15 +208,13 @@ import flash.text.TextField;
 			var characters:Array = alphabet.split("");
 			var bitmapWidth:uint = 0;
 			var bitmapHeight:uint = 0;
-			var padding:uint = 2; // there has to be somewhere better to pull this from
-			var dpadding:uint = padding * 2;
-			var translationMatrix:Matrix = new Matrix(1, 0, 0, 1, -padding, -padding);
+			var translationMatrix:Matrix = new Matrix(1, 0, 0, 1, padding, padding);
 			var colorTransform:ColorTransform = new ColorTransform(1, 1, 1, 1, 0, 0, 0, 0);
 
 			for each (var character:String in characters) {
 				tf.setTextFormat(format);
 				tf.text = character;
-				var characterBitmap:BitmapData = new BitmapData(tf.width - dpadding, tf.height - padding, true, 0x0);
+				var characterBitmap:BitmapData = new BitmapData(tf.width + padding, tf.height + padding, true, 0x0);
 				af.characters[character] = new AxCharacter(characterBitmap.width, characterBitmap.height, new AxRect(bitmapWidth, 0, characterBitmap.width, characterBitmap.height));
 				characterBitmap.draw(tf, translationMatrix, colorTransform, null, null, true);
 				bitmaps.push(characterBitmap);

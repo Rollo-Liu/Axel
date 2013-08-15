@@ -5,7 +5,8 @@ package org.axgl.text {
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.text.TextField;
+import flash.text.AntiAliasType;
+import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
@@ -199,7 +200,7 @@ package org.axgl.text {
 			tf.autoSize = TextFieldAutoSize.LEFT;
 			tf.border = false;
 			tf.embedFonts = embedded;
-			tf.antiAliasType = flash.text.AntiAliasType.NORMAL;
+			tf.antiAliasType = AntiAliasType.ADVANCED;
 			tf.background = false;
 			tf.selectable = false;
 
@@ -210,14 +211,14 @@ package org.axgl.text {
 			var padding:uint = 2; // there has to be somewhere better to pull this from
 			var dpadding:uint = padding * 2;
 			var translationMatrix:Matrix = new Matrix(1, 0, 0, 1, -padding, -padding);
-			var colorTransform:ColorTransform = new ColorTransform(1, 1, 0, 1, 0, 0, 0, 0);
+			var colorTransform:ColorTransform = new ColorTransform(1, 1, 1, 1, 0, 0, 0, 0);
 
 			for each (var character:String in characters) {
 				tf.setTextFormat(format);
 				tf.text = character;
 				var characterBitmap:BitmapData = new BitmapData(tf.width - dpadding, tf.height - padding, true, 0x0);
 				af.characters[character] = new AxCharacter(characterBitmap.width, characterBitmap.height, new AxRect(bitmapWidth, 0, characterBitmap.width, characterBitmap.height));
-				characterBitmap.draw(tf, translationMatrix, colorTransform);
+				characterBitmap.draw(tf, translationMatrix, colorTransform, null, null, true);
 				bitmaps.push(characterBitmap);
 				bitmapWidth += characterBitmap.width;
 				bitmapHeight = characterBitmap.height > bitmapHeight ? characterBitmap.height : bitmapHeight;
@@ -242,12 +243,13 @@ package org.axgl.text {
 				axc.uv.y /= af.texture.height;
 				axc.uv.height /= af.texture.height;
 			}
-			
-			tf.text = "Test";
-			tf.x = 100;
-			tf.y = 125;
-			//tf.scaleX = tf.scaleY = 2;
-			Ax.stage2D.addChild(tf);
+
+			// He forget to comment this test thing out...!
+//			tf.text = "This is the test info from AxFont...";
+//			tf.x = 100;
+//			tf.y = 125;
+//			tf.scaleX = tf.scaleY = 2;
+//			Ax.stage2D.addChild(tf);
 
 			return af;
 		}

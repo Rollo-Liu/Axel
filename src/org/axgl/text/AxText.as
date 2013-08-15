@@ -122,7 +122,7 @@ package org.axgl.text {
 		 * Builds the mesh required to draw this object's text. Any time the text changes, this must be rebuilt and uploaded
 		 * to the GPU.
 		 */
-		private function build():void {
+		protected function build():void {
 			if (_text.length == 0) {
 				return;
 			}

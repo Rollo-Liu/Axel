@@ -16,7 +16,7 @@ package org.axgl.text {
 		/**
 		 * The actual string to draw to the screen.
 		 */
-		private var _text:String;
+		protected var _text:String;
 		/**
 		 * The font to use when drawing the text.
 		 */

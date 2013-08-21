@@ -319,6 +319,17 @@ package org.axgl {
 			}
 		}
 
+		public function updateEffects():void
+		{
+			if (effects != null) {
+				for each(var effect:AxSpriteEffect in effects) {
+					if (effect.active) {
+						effect.update();
+					}
+				}
+			}
+		}
+
 		/**
 		 * @inheritDoc
 		 */
@@ -360,14 +371,7 @@ package org.axgl {
 				load(AxResource.ICON);
 			}
 			calculateFrame();
-			
-			if (effects != null) {
-				for each(var effect:AxSpriteEffect in effects) {
-					if (effect.active) {
-						effect.update();
-					}
-				}
-			}
+			updateEffects();
 		}
 
 		/**

@@ -339,8 +339,12 @@ package org.axgl {
 
 			// Create mouse and bind mouse events
 			mouse = new AxMouse;
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, mouse.onMouseDown);
-			stage.addEventListener(MouseEvent.MOUSE_UP, mouse.onMouseUp);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, mouse.onMouseLeftDown);
+			stage.addEventListener(MouseEvent.MOUSE_UP, mouse.onMouseLeftUp);
+			stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, mouse.onMouseRightDown);
+			stage.addEventListener(MouseEvent.RIGHT_MOUSE_UP, mouse.onMouseRightUp);
+			stage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, mouse.onMouseMiddleDown);
+			stage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, mouse.onMouseMiddleUp);
 			stage.addEventListener(MouseEvent.MOUSE_WHEEL, mouse.onMouseWheel);
 
 			// Bind touch evenets

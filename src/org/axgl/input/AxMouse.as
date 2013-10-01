@@ -12,7 +12,7 @@ package org.axgl.input {
 		/**
 		 * The number of input buttons for this input object.
 		 */
-		public static const NUM_INPUTS:uint = 3;
+		public static const NUM_INPUTS:uint = 5;
 
 		/**
 		 * The x position of the pointer in world coordinates.
@@ -43,8 +43,14 @@ package org.axgl.input {
 		 * 
 		 * @param event The mouse event.
 		 */
-		public function onMouseDown(event:MouseEvent):void {
+		public function onMouseLeftDown(event:MouseEvent):void {
 			keys[AxMouseButton.LEFT] = Ax.now;
+		}
+		public function onMouseRightDown(event:MouseEvent):void {
+			keys[AxMouseButton.RIGHT] = Ax.now;
+		}
+		public function onMouseMiddleDown(event:MouseEvent):void {
+			keys[AxMouseButton.MIDDLE] = Ax.now;
 		}
 
 		/**
@@ -52,8 +58,14 @@ package org.axgl.input {
 		 * 
 		 * @param event The mouse event.
 		 */
-		public function onMouseUp(event:MouseEvent):void {
+		public function onMouseLeftUp(event:MouseEvent):void {
 			keys[AxMouseButton.LEFT] = -Ax.now;
+		}
+		public function onMouseRightUp(event:MouseEvent):void {
+			keys[AxMouseButton.RIGHT] = -Ax.now;
+		}
+		public function onMouseMiddleUp(event:MouseEvent):void {
+			keys[AxMouseButton.MIDDLE] = -Ax.now;
 		}
 
 		/**

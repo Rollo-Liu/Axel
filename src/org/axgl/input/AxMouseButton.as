@@ -4,7 +4,9 @@ package org.axgl.input {
 	 */
 	public class AxMouseButton {
 		public static const LEFT:uint = 0;
-		public static const WHEEL_UP:uint = 1;
-		public static const WHEEL_DOWN:uint = 2;
+		public static const RIGHT:uint = 1;
+		public static const MIDDLE:uint = 2;
+		public static const WHEEL_UP:uint = 3;
+		public static const WHEEL_DOWN:uint = 4;
 	}
 }

@@ -277,6 +277,7 @@ package org.axgl {
 				animation = animations[name];
 				animationDelay = 1 / animation.framerate;
 				animationTimer = animationDelay;
+				animation.resetCallback();
 				frame = 0;
 			}
 			return this;
@@ -307,8 +308,9 @@ package org.axgl {
 					if (frame + 1 < animation.frames.length || animation.looped) {
 						frame = (frame + 1) % animation.frames.length;
 					}
-					if (frame + 1 == animation.frames.length && animation.callback != null) {
-						animation.callback();
+					if (frame + 1 == animation.frames.length) {
+						var callback:Function = animation.callback;
+						if (callback) callback();
 					}
 					uvOffset[0] = (animation.frames[frame] % framesPerRow) * quad.uvWidth;
 					uvOffset[1] = Math.floor(animation.frames[frame] / framesPerRow) * quad.uvHeight;

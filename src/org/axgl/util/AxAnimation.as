@@ -13,7 +13,26 @@ package org.axgl.util {
 		/** Whether or not this animation is looped. */
 		public var looped:Boolean;
 		/** Callback that is called when (and every time) the animation finishes. */
-		public var callback:Function;
+		private var _callback:Function;
+		public function get callback():Function
+		{
+			if (!_callback) return null;
+
+			if (looped)
+			{
+				return _callback;
+			}
+			else if (!isCallbackFunctionCalled)
+			{
+				isCallbackFunctionCalled = true;
+				return _callback;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		private var isCallbackFunctionCalled:Boolean = false;
 
 		/**
 		 * Creates a new animation.
@@ -28,7 +47,11 @@ package org.axgl.util {
 			this.frames = Vector.<uint>(frames);
 			this.framerate = framerate;
 			this.looped = looped;
-			this.callback = callback;
+			this._callback = callback;
+		}
+
+		public function resetCallback():void {
+			isCallbackFunctionCalled = false;
 		}
 		
 		public function dispose():void {

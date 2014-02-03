@@ -303,7 +303,7 @@ package org.axgl {
 			updateCenter();
 		}
 		
-		protected function updateCenter():void {
+		public function updateCenter():void {
 			center.x = x + width / 2;
 			center.y = y + height / 2;
 		}
@@ -530,6 +530,11 @@ package org.axgl {
 		 */
 		override public function toString():String {
 			return getQualifiedClassName(this) + " @ " + super.toString();
+		}
+
+		public function isOutOfScreen():Boolean
+		{
+			return x + width < Ax.camera.x || x > Ax.camera.x + Ax.width || y + height < Ax.camera.y || y > Ax.camera.y + Ax.height;
 		}
 	}
 }

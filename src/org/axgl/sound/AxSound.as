@@ -49,12 +49,12 @@ package org.axgl.sound {
 		 * @param loop Whether or not the sound should loop.
 		 * @param start The time (in ms) of how far into the sound it should start playing.
 		 */
-		public function AxSound(sound:Class, volume:Number = 1, loop:Boolean = false, start:Number = 0) {
+		public function AxSound(sound:Class, volume:Number = 1, loop:Boolean = false, start:Number = 0, panning:Number = 0) {
 			this.sound = new sound();
 			this.volume = volume;
 			this.loop = loop;
 			this.start = start;
-			this.soundTransform = new SoundTransform(volume);
+			this.soundTransform = new SoundTransform(volume, panning);
 			this.eventDispatcher = new EventDispatcher();
 		}
 
@@ -87,7 +87,11 @@ package org.axgl.sound {
 		 */
 		override public function destroy():void {
 			dispatchEvent(new Event(DESTROYED));
-			if (soundChannel) soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundChannelComplete);
+			if (soundChannel)
+			{
+				soundChannel.stop();
+				soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundChannelComplete);
+			}
 			sound = null;
 			soundChannel = null;
 			soundTransform = null;

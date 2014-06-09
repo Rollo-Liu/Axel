@@ -172,6 +172,7 @@ package org.axgl.collision {
 				source.x -= overlap;
 				source.velocity.x = 0;
 				target.velocity.x = 0;
+				source.updateCenter();
 				return true;
 			}
 
@@ -225,6 +226,7 @@ package org.axgl.collision {
 				source.y -= overlap;
 				source.velocity.y = 0;
 				target.velocity.y = 0;
+				source.updateCenter();
 				return true;
 			}
 

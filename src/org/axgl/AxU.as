@@ -87,13 +87,7 @@ package org.axgl {
 		 * @return The clamped value.
 		 */
 		public static function clamp(value:Number, min:Number, max:Number):Number {
-			if (value > max) {
-				return max;
-			}
-			if (value < min) {
-				return min;
-			}
-			return value;
+			return (value > max ? max : value < min ? min : value);
 		}
 
 		/**
@@ -114,7 +108,7 @@ package org.axgl {
 			var seconds:Number = dx % 60;
 			dx /= 60;
 			var minutes:Number = dx % 60;
-			dx /= 60
+			dx /= 60;
 			var hours:Number = dx;
 
 			return (includeHours ? ((hours < 10 ? "0" + hours : hours.toString()) + ":") : "") + (minutes < 10 ? "0" + minutes : minutes.toString()) + ":" + (seconds < 10 ? "0" + seconds : seconds.toString());

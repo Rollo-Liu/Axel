@@ -72,14 +72,14 @@ package org.axgl {
 		 *
 		 * @default (1, 1)
 		 */
-		public var scale:AxPoint
+		public var scale:AxPoint;
 		/**
 		 * The original point of scaling. If this is set to 0, 0 the model will scale from the upper left corner, and if this
 		 * is set to the center of the object, it will scale from the center.
 		 *
 		 * @default (0, 0)
 		 */
-		public var origin:AxPoint
+		public var origin:AxPoint;
 		/**
 		 * The pivot point of rotation. When loading a graphic in AxSprite, the pivot point will be set to the center
 		 * of the entity (eg. the object will rotate around its center).

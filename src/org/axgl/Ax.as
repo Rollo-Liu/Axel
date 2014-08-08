@@ -495,6 +495,18 @@ package org.axgl {
 			initialized = true;
 		}
 
+		static public function changeResolution(width:uint, height:uint):void
+		{
+			Ax.width = width;
+			Ax.height = height;
+
+			context.configureBackBuffer(Ax.width, Ax.height, 0, false);
+			context.enableErrorChecking = true;
+
+			camera = new AxCamera;
+			debugger = new AxDebugger;
+		}
+
 		/**
 		 * The current rendering mode ("Software Mode" or "Hardware Mode").
 		 *

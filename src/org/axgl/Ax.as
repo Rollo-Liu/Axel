@@ -116,6 +116,11 @@ package org.axgl {
 		 * If you set fixed framerate to true, this will always return 1/framerate.
 		 */
 		public static var dt:Number = 0;
+		public static var trueDT:Number = 0;
+		/**
+		 * For bullet time
+		 */
+		public static var timeShift:Number = 1;
 		/**
 		 * Read-only. Counts the number of frames since the current "second" began in order to calculate fps.
 		 * @default
@@ -579,9 +584,10 @@ package org.axgl {
 		protected function updateTimer():void {
 			then = now;
 			now = getTimer();
-			dt = then == 0 ? 0 : (now - then) / 1000;
+			if (then > 0) trueDT = (now - then) * 0.001;
+			dt = trueDT * timeShift;
 			if (fixedTimestep) {
-				dt = 1 / requestedFramerate;
+				dt = trueDT = 1 / requestedFramerate;
 			}
 
 			frames++;

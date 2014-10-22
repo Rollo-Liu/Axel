@@ -38,6 +38,7 @@ package org.axgl {
 	public class Ax extends Sprite {
 		public static const LIBRARY_NAME:String = "Axel";
 		public static const LIBRARY_VERSION:String = "0.9.3";
+		private static const MAX_DT:Number = 1/20; //20fps
 		
 		public static var shader:AxShader;
 		
@@ -596,7 +597,7 @@ package org.axgl {
 		protected function updateTimer():void {
 			then = now;
 			now = getTimer();
-			if (then > 0) trueDT = (now - then) * 0.001;
+			if (then > 0) trueDT = Math.min((now - then) * 0.001, MAX_DT);
 			dt = trueDT * timeShift;
 			if (fixedTimestep) {
 				dt = trueDT = 1 / requestedFramerate;
